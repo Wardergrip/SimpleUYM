@@ -1,7 +1,7 @@
 # SimpleUYM
 Simple Unity YAML Merge is a GUI aimed to make the setup and opening of Unity YAML merge a little easier.
 
-Ypur configuration like git repository and path to git bash are saved and remembered so that adter configuring, opening the merge tool is as easy as clicking a button.
+Your configuration like git repository and path to git bash are saved and remembered so that after configuring, opening the merge tool is as easy as clicking a button.
 
 The inner workings are based on [this article](https://learn.unity.com/tutorial/working-with-yamlmerge).
 
