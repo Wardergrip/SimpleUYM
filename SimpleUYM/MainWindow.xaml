@@ -24,6 +24,8 @@
 				<TextBlock Text="Git repository path:"/>
 				<TextBlock Text="{Binding PathToRepository}"/>
 				<Button Content="Change" Command="{Binding ChangeGitRepositoryPathCommand}"/>
+				<TextBlock/>
+				<Button Content="Setup in repository" Command="{Binding SetupRepositoryCommand}" IsEnabled="{Binding IsSetupAvailable}"/>
 			</StackPanel>
 		</TabItem>
 	</TabControl>
