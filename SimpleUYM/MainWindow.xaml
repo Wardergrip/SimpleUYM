@@ -4,9 +4,27 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SimpleUYM"
+		xmlns:vm="clr-namespace:SimpleUYM.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="MainWindow" Height="250" Width="250">
+	<Window.DataContext>
+		<vm:MainVM/>
+	</Window.DataContext>
+    <TabControl>
+		<TabItem Header="Main">
+			<StackPanel>
+				<Button Content="Mergetool" Command="{Binding MergetoolCommand}"/>
+			</StackPanel>
+		</TabItem>
+		<TabItem Header="Config">
+			<StackPanel>
+				<TextBlock Text="Git bash path:"/>
+				<TextBlock Text="{Binding PathToGitBash}"/>
+				<Button Content="Change" Command="{Binding ChangeGitBashPathCommand}"/>
+				<TextBlock Text="Git repository path:"/>
+				<TextBlock Text="{Binding PathToRepository}"/>
+				<Button Content="Change" Command="{Binding ChangeGitRepositoryPathCommand}"/>
+			</StackPanel>
+		</TabItem>
+	</TabControl>
 </Window>
