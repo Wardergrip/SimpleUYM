@@ -9,6 +9,7 @@ The inner workings are based on [this article](https://learn.unity.com/tutorial/
 These are default/example paths to guide you on where to look.
 
 Git bash: `C:\Program Files\Git\git-bash.exe`
+
 UnityYAMLMerge: `C:/Program Files/Unity/Hub/Editor/2019.2.11f1/Editor/Data/Tools/UnityYAMLMerge.exe`
 
 ## Prerequisites
