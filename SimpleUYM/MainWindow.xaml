@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SimpleUYM"
 		xmlns:vm="clr-namespace:SimpleUYM.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="250" Width="250">
+        Title="SimpleUYM v1.0" Height="250" Width="250">
 	<Window.DataContext>
 		<vm:MainVM/>
 	</Window.DataContext>
@@ -14,18 +14,26 @@
 		<TabItem Header="Main">
 			<StackPanel>
 				<Button Content="Mergetool" Command="{Binding MergetoolCommand}"/>
+				<TextBlock Text="{Binding CmdOutput}"/>
 			</StackPanel>
 		</TabItem>
 		<TabItem Header="Config">
 			<StackPanel>
-				<TextBlock Text="Git bash path:"/>
+				<!--<TextBlock Text="Git bash path:"/>
 				<TextBlock Text="{Binding PathToGitBash}"/>
-				<Button Content="Change" Command="{Binding ChangeGitBashPathCommand}"/>
+				<Button Content="Change" Command="{Binding ChangeGitBashPathCommand}"/>-->
 				<TextBlock Text="Git repository path:"/>
 				<TextBlock Text="{Binding PathToRepository}"/>
 				<Button Content="Change" Command="{Binding ChangeGitRepositoryPathCommand}"/>
 				<TextBlock/>
 				<Button Content="Setup in repository" Command="{Binding SetupRepositoryCommand}" IsEnabled="{Binding IsSetupAvailable}"/>
+			</StackPanel>
+		</TabItem>
+		<TabItem Header="Info">
+			<StackPanel>
+				<TextBlock Text="Version 1.0"/>
+				<TextBlock Text="Github:"/>
+				<TextBlock Text="https://github.com/Wardergrip/SimpleUYM"/>
 			</StackPanel>
 		</TabItem>
 	</TabControl>

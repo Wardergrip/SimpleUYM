@@ -20,7 +20,7 @@ namespace SimpleUYM.ViewModel
 
 		// Data
 		private string _pathToGitBash;
-		public string PathToGitBash 
+		public string PathToGitBash
 		{
 			get => _pathToGitBash;
 			private set
@@ -41,9 +41,9 @@ namespace SimpleUYM.ViewModel
 			}
 		}
 		private bool _isSetupAvailable;
-		public bool IsSetupAvailable 
-		{ 
-			get => _isSetupAvailable; 
+		public bool IsSetupAvailable
+		{
+			get => _isSetupAvailable;
 			set
 			{
 				_isSetupAvailable = value;
@@ -51,10 +51,21 @@ namespace SimpleUYM.ViewModel
 			}
 		}
 
+		private string _cmdOutput;
+		public string CmdOutput
+		{
+			get => _cmdOutput;
+			set
+			{
+				_cmdOutput = value;
+				OnPropertyChanged(nameof(CmdOutput));
+			}
+		}
+
 		// Internal data events
 		private event Action OnRepositoryPathUpdate;
 
-		public MainVM() 
+		public MainVM()
 		{
 			LoadConfig($"{Environment.CurrentDirectory}\\simpleUYMconfig.json");
 			MergetoolCommand = new RelayCommand(OpenMergetool);
@@ -62,14 +73,16 @@ namespace SimpleUYM.ViewModel
 			ChangeGitRepositoryPathCommand = new RelayCommand(SetGitRepositoryPath);
 			SetupRepositoryCommand = new RelayCommand(SetupRepository);
 
-			OnRepositoryPathUpdate += () => IsSetupAvailable = !string.IsNullOrEmpty(PathToRepository);
+			OnRepositoryPathUpdate += UpdateIsSetupAvailable;
 			// Force its update
-			IsSetupAvailable = !string.IsNullOrEmpty(PathToRepository);
+			UpdateIsSetupAvailable();
 		}
 		~MainVM()
 		{
 			SaveConfig($"{Environment.CurrentDirectory}\\simpleUYMconfig.json");
 		}
+		private void UpdateIsSetupAvailable() => IsSetupAvailable = !string.IsNullOrEmpty(PathToRepository);
+
 		private void SetupRepository()
 		{
 			try
@@ -83,7 +96,7 @@ namespace SimpleUYM.ViewModel
 				if (!fileContent.Contains(contentToCheck))
 				{
 					string pathToUnityYAMLMerge = GetFilePathFromUser(filter: "Applications (*.exe)|*.exe|All files (*.*)|*.*")
-						.Replace("\\","\\\\"); // Necessary for .git/config file
+						.Replace("\\", "\\\\"); // Necessary for .git/config file
 					if (pathToUnityYAMLMerge == null)
 					{
 						return;
@@ -107,7 +120,7 @@ namespace SimpleUYM.ViewModel
 		{
 			PathToGitBash = GetFilePathFromUser(filter: "Applications (*.exe)|*.exe|All files (*.*)|*.*");
 		}
-		private void SetGitRepositoryPath() 
+		private void SetGitRepositoryPath()
 		{
 			PathToRepository = GetFolderPathFromUser();
 		}
@@ -164,42 +177,32 @@ namespace SimpleUYM.ViewModel
 		}
 		private void OpenMergetool()
 		{
-			RunGitBashCommand(PathToGitBash, PathToRepository, "git mergetool");
+			CmdOutput = CmdHelper.Run("git", "mergetool", PathToRepository);
 		}
-
-		private void RunGitBashCommand(string gitBashPath, string workingDirectory, string command)
+	}
+	public static class CmdHelper
+	{
+		public static string Run(string command, string commandParameters = "", string workingDir = null)
 		{
-			using (Process process = new Process())
-			{
-				process.StartInfo.FileName = gitBashPath;
-				process.StartInfo.WorkingDirectory = workingDirectory;
-				process.StartInfo.Arguments = command;
-				process.StartInfo.UseShellExecute = false;
-				process.StartInfo.RedirectStandardOutput = true;
-				process.StartInfo.RedirectStandardError = true;
-				process.StartInfo.CreateNoWindow = true;
-
-				process.OutputDataReceived += (sender, eventArgs) =>
-				{
-					if (!string.IsNullOrEmpty(eventArgs.Data))
-					{
-						Console.WriteLine($"Output: {eventArgs.Data}");
-					}
-				};
-
-				process.ErrorDataReceived += (sender, eventArgs) =>
-				{
-					if (!string.IsNullOrEmpty(eventArgs.Data))
-					{
-						Console.WriteLine($"Error: {eventArgs.Data}");
-					}
-				};
-
-				process.Start();
-				process.BeginOutputReadLine();
-				process.BeginErrorReadLine();
-				process.WaitForExit();
-			}
+			// https://stackoverflow.com/questions/206323/how-to-execute-command-line-in-c-get-std-out-results
+			//Create process
+			System.Diagnostics.Process pProcess = new System.Diagnostics.Process();
+			//strCommand is path and file name of command to run
+			pProcess.StartInfo.FileName = command;
+			//strCommandParameters are parameters to pass to program
+			pProcess.StartInfo.Arguments = commandParameters;
+			pProcess.StartInfo.UseShellExecute = false;
+			//Set output of program to be written to process output stream
+			pProcess.StartInfo.RedirectStandardOutput = true;
+			//Optional
+			if (workingDir != null) pProcess.StartInfo.WorkingDirectory = workingDir;
+			//Start the process
+			pProcess.Start();
+			//Get program output
+			string output = pProcess.StandardOutput.ReadToEnd();
+			//Wait for process to finish
+			pProcess.WaitForExit();
+			return output;
 		}
 	}
 }
