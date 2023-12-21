@@ -5,6 +5,9 @@ Your configuration of git repository and UnityYAMLMerge are saved and remembered
 
 The GUI is based on [this article](https://learn.unity.com/tutorial/working-with-yamlmerge).
 
+## How to use
+If you have a merge conflict on a Unity prefab or scene file, open SimpleUYM (configure if necessary) and click mergetool. Check after the results first before continuing.
+
 ## Config help
 These are default/example paths to guide you on where to look.
 
