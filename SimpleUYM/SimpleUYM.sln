@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleUYM", "SimpleUYM.csproj", "{FF996F5B-B342-4F61-B158-0B7F50191C45}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SimpleUYMInstaller", "..\SimpleUYMInstaller\SimpleUYMInstaller.vdproj", "{16264DB2-BFBA-419E-B8A5-1FEFBC3E8EFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{FF996F5B-B342-4F61-B158-0B7F50191C45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF996F5B-B342-4F61-B158-0B7F50191C45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF996F5B-B342-4F61-B158-0B7F50191C45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16264DB2-BFBA-419E-B8A5-1FEFBC3E8EFE}.Debug|Any CPU.ActiveCfg = Debug
+		{16264DB2-BFBA-419E-B8A5-1FEFBC3E8EFE}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
