@@ -7,6 +7,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Forms;
 using SimpleUYM.Model;
+using System.Text;
 
 namespace SimpleUYM.ViewModel
 {
@@ -62,6 +63,8 @@ namespace SimpleUYM.ViewModel
 			}
 		}
 
+		private string BatFilePath { get => $"{Environment.CurrentDirectory}\\mergetool.bat"; }
+
 		// Internal data events
 		private event Action OnRepositoryPathUpdate;
 
@@ -80,6 +83,11 @@ namespace SimpleUYM.ViewModel
 		~MainVM()
 		{
 			SaveConfig($"{Environment.CurrentDirectory}\\simpleUYMconfig.json");
+
+			if (File.Exists(BatFilePath))
+			{
+				File.Delete(BatFilePath);
+			}
 		}
 		private void UpdateIsSetupAvailable() => IsSetupAvailable = !string.IsNullOrEmpty(PathToRepository);
 
@@ -177,32 +185,21 @@ namespace SimpleUYM.ViewModel
 		}
 		private void OpenMergetool()
 		{
-			CmdOutput = CmdHelper.Run("git", "mergetool", PathToRepository);
-		}
-	}
-	public static class CmdHelper
-	{
-		public static string Run(string command, string commandParameters = "", string workingDir = null)
-		{
-			// https://stackoverflow.com/questions/206323/how-to-execute-command-line-in-c-get-std-out-results
-			//Create process
-			System.Diagnostics.Process pProcess = new System.Diagnostics.Process();
-			//strCommand is path and file name of command to run
-			pProcess.StartInfo.FileName = command;
-			//strCommandParameters are parameters to pass to program
-			pProcess.StartInfo.Arguments = commandParameters;
-			pProcess.StartInfo.UseShellExecute = false;
-			//Set output of program to be written to process output stream
-			pProcess.StartInfo.RedirectStandardOutput = true;
-			//Optional
-			if (workingDir != null) pProcess.StartInfo.WorkingDirectory = workingDir;
-			//Start the process
-			pProcess.Start();
-			//Get program output
-			string output = pProcess.StandardOutput.ReadToEnd();
-			//Wait for process to finish
-			pProcess.WaitForExit();
-			return output;
+			if (!File.Exists(BatFilePath))
+			{
+				File.Create(BatFilePath).Close();
+			}
+
+			StringBuilder sb = new StringBuilder();
+			sb.AppendLine("git mergetool\npause");
+			File.WriteAllText(BatFilePath, sb.ToString());
+
+			using (Process process = new Process())
+			{
+				process.StartInfo.WorkingDirectory = PathToRepository;
+				process.StartInfo.FileName = BatFilePath;
+				process.Start();
+			}
 		}
 	}
 }
