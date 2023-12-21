@@ -126,11 +126,13 @@ namespace SimpleUYM.ViewModel
 		}
 		private void SetGitBashPath()
 		{
-			PathToGitBash = GetFilePathFromUser(filter: "Applications (*.exe)|*.exe|All files (*.*)|*.*");
+			string userInput = GetFilePathFromUser(filter: "Applications (*.exe)|*.exe|All files (*.*)|*.*");
+			PathToGitBash = string.IsNullOrEmpty(userInput) ? PathToGitBash : userInput;
 		}
 		private void SetGitRepositoryPath()
 		{
-			PathToRepository = GetFolderPathFromUser();
+			string userInput = GetFolderPathFromUser();
+			PathToRepository = string.IsNullOrEmpty(userInput) ? PathToRepository : userInput;
 		}
 
 		private void SaveConfig(string filePath)
