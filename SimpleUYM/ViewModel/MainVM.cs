@@ -15,19 +15,20 @@ namespace SimpleUYM.ViewModel
 	{
 		// Commands
 		public RelayCommand MergetoolCommand { get; private set; }
-		public RelayCommand ChangeGitBashPathCommand { get; private set; }
+		public RelayCommand ChangeUnityYAMLMergePathCommand { get; private set; }
 		public RelayCommand ChangeGitRepositoryPathCommand { get; private set; }
 		public RelayCommand SetupRepositoryCommand { get; private set; }
 
 		// Data
-		private string _pathToGitBash;
-		public string PathToGitBash
+		private string _pathToUnityYAMLMerge;
+		public string PathToUnityYAMLMerge
 		{
-			get => _pathToGitBash;
+			get => _pathToUnityYAMLMerge;
 			private set
 			{
-				_pathToGitBash = value;
-				OnPropertyChanged(nameof(PathToGitBash));
+				_pathToUnityYAMLMerge = value;
+				OnPropertyChanged(nameof(PathToUnityYAMLMerge));
+				OnUnityYAMLMergePathUpdate?.Invoke();
 			}
 		}
 		private string _pathToRepository;
@@ -52,31 +53,22 @@ namespace SimpleUYM.ViewModel
 			}
 		}
 
-		private string _cmdOutput;
-		public string CmdOutput
-		{
-			get => _cmdOutput;
-			set
-			{
-				_cmdOutput = value;
-				OnPropertyChanged(nameof(CmdOutput));
-			}
-		}
-
 		private string BatFilePath { get => $"{Environment.CurrentDirectory}\\mergetool.bat"; }
 
 		// Internal data events
 		private event Action OnRepositoryPathUpdate;
+		private event Action OnUnityYAMLMergePathUpdate;
 
 		public MainVM()
 		{
 			LoadConfig($"{Environment.CurrentDirectory}\\simpleUYMconfig.json");
 			MergetoolCommand = new RelayCommand(OpenMergetool);
-			ChangeGitBashPathCommand = new RelayCommand(SetGitBashPath);
+			ChangeUnityYAMLMergePathCommand = new RelayCommand(SetPathToUnityYAMLMerge);
 			ChangeGitRepositoryPathCommand = new RelayCommand(SetGitRepositoryPath);
 			SetupRepositoryCommand = new RelayCommand(SetupRepository);
 
 			OnRepositoryPathUpdate += UpdateIsSetupAvailable;
+			OnUnityYAMLMergePathUpdate += UpdateIsSetupAvailable;
 			// Force its update
 			UpdateIsSetupAvailable();
 		}
@@ -89,7 +81,7 @@ namespace SimpleUYM.ViewModel
 				File.Delete(BatFilePath);
 			}
 		}
-		private void UpdateIsSetupAvailable() => IsSetupAvailable = !string.IsNullOrEmpty(PathToRepository);
+		private void UpdateIsSetupAvailable() => IsSetupAvailable = !string.IsNullOrEmpty(PathToRepository) && !string.IsNullOrEmpty(PathToUnityYAMLMerge);
 
 		private void SetupRepository()
 		{
@@ -103,7 +95,7 @@ namespace SimpleUYM.ViewModel
 				// Check if the content is present
 				if (!fileContent.Contains(contentToCheck))
 				{
-					string pathToUnityYAMLMerge = GetFilePathFromUser(filter: "Applications (*.exe)|*.exe|All files (*.*)|*.*")
+					string pathToUnityYAMLMerge = PathToUnityYAMLMerge
 						.Replace("\\", "\\\\"); // Necessary for .git/config file
 					if (pathToUnityYAMLMerge == null)
 					{
@@ -121,13 +113,13 @@ namespace SimpleUYM.ViewModel
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"Error updating Git configuration: {ex.Message}");
+				System.Windows.MessageBox.Show($"Error updating Gitconfiguration: {ex.Message}","[SimpleUYM] Error", MessageBoxButton.OK);
 			}
 		}
-		private void SetGitBashPath()
+		private void SetPathToUnityYAMLMerge()
 		{
 			string userInput = GetFilePathFromUser(filter: "Applications (*.exe)|*.exe|All files (*.*)|*.*");
-			PathToGitBash = string.IsNullOrEmpty(userInput) ? PathToGitBash : userInput;
+			PathToUnityYAMLMerge = string.IsNullOrEmpty(userInput) ? PathToUnityYAMLMerge : userInput;
 		}
 		private void SetGitRepositoryPath()
 		{
@@ -143,7 +135,7 @@ namespace SimpleUYM.ViewModel
 			}
 			ConfigData configData = new ConfigData()
 			{
-				PathToGitBash = this.PathToGitBash,
+				PathToUnityYAMLMerge = this.PathToUnityYAMLMerge,
 				PathToRepository = this.PathToRepository
 			};
 			File.WriteAllText(filePath, JsonConvert.SerializeObject(configData));
@@ -159,7 +151,7 @@ namespace SimpleUYM.ViewModel
 			{
 				return false;
 			}
-			PathToGitBash = configData.PathToGitBash;
+			PathToUnityYAMLMerge = configData.PathToUnityYAMLMerge;
 			PathToRepository = configData.PathToRepository;
 			return true;
 		}

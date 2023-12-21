@@ -19,12 +19,12 @@
 		</TabItem>
 		<TabItem Header="Config">
 			<StackPanel>
-				<!--<TextBlock Text="Git bash path:"/>
-				<TextBlock Text="{Binding PathToGitBash}"/>
-				<Button Content="Change" Command="{Binding ChangeGitBashPathCommand}"/>-->
+				<TextBlock Text="UnityYAMLMerge path:"/>
+				<TextBlock Text="{Binding PathToUnityYAMLMerge}"/>
+				<Button Content="Change path" Command="{Binding ChangeUnityYAMLMergePathCommand}"/>
 				<TextBlock Text="Git repository path:"/>
 				<TextBlock Text="{Binding PathToRepository}"/>
-				<Button Content="Change" Command="{Binding ChangeGitRepositoryPathCommand}"/>
+				<Button Content="Change path" Command="{Binding ChangeGitRepositoryPathCommand}"/>
 				<TextBlock/>
 				<Button Content="Setup in repository" Command="{Binding SetupRepositoryCommand}" IsEnabled="{Binding IsSetupAvailable}"/>
 			</StackPanel>

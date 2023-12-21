@@ -5,8 +5,8 @@ namespace SimpleUYM.Model
 {
 	public class ConfigData
 	{
-		[JsonProperty(PropertyName = "PathToGitBash")]
-		public string PathToGitBash { get; set; }
+		[JsonProperty(PropertyName = "PathToUnityYAMLMerge")]
+		public string PathToUnityYAMLMerge { get; set; }
 		[JsonProperty(PropertyName = "PathToRepository")]
 		public string PathToRepository { get; set; }
 
@@ -14,7 +14,7 @@ namespace SimpleUYM.Model
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine("{");
-			sb.AppendLine("\t\"PathToGitBash\":\"\",");
+			sb.AppendLine("\t\"PathToUnityYAMLMerge\":\"\",");
 			sb.AppendLine("\t\"PathToRepository\":\"\"");
 			sb.AppendLine("}");
 			return sb.ToString();
