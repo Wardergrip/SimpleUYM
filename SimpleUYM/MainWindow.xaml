@@ -14,7 +14,6 @@
 		<TabItem Header="Main">
 			<StackPanel>
 				<Button Content="Mergetool" Command="{Binding MergetoolCommand}"/>
-				<TextBlock Text="{Binding CmdOutput}"/>
 			</StackPanel>
 		</TabItem>
 		<TabItem Header="Config">
