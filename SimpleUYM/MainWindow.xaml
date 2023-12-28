@@ -6,11 +6,38 @@
         xmlns:local="clr-namespace:SimpleUYM"
 		xmlns:vm="clr-namespace:SimpleUYM.ViewModel"
         mc:Ignorable="d"
-        Title="SimpleUYM v1.0" Height="250" Width="250">
+        Title="SimpleUYM v1.0" Height="250" Width="250"
+		Foreground="White" Background="#1F1F1F">
 	<Window.DataContext>
 		<vm:MainVM/>
 	</Window.DataContext>
-    <TabControl>
+	<TabControl Background="#1F1F1F">
+		<TabControl.Resources>
+			<Style TargetType="TabItem">
+				<Setter Property="Foreground" Value="White"/>
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="TabItem">
+							<Grid Name="Panel">
+								<ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+							</Grid>
+							<ControlTemplate.Triggers>
+								<Trigger Property="IsSelected" Value="True">
+									<Setter TargetName="Panel" Property="Background" Value="#4D4D4D" />
+								</Trigger>
+								<Trigger Property="IsSelected" Value="False">
+									<Setter TargetName="Panel" Property="Background" Value="#363636" />
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+		</TabControl.Resources>
 		<TabItem Header="Main">
 			<StackPanel>
 				<Button Content="Mergetool" Command="{Binding MergetoolCommand}"/>
