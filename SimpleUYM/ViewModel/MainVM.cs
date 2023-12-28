@@ -80,7 +80,6 @@ namespace SimpleUYM.ViewModel
 			OnRepositoryPathUpdate += UpdateIsSetupAvailable;
 			OnRepositoryPathUpdate += UpdateIsMergetoolAvailable;
 			OnUnityYAMLMergePathUpdate += UpdateIsSetupAvailable;
-			OnUnityYAMLMergePathUpdate += UpdateIsMergetoolAvailable;
 			// Force its update
 			UpdateIsSetupAvailable();
 			UpdateIsMergetoolAvailable();
@@ -95,7 +94,27 @@ namespace SimpleUYM.ViewModel
 			}
 		}
 		private void UpdateIsSetupAvailable() => IsSetupAvailable = !string.IsNullOrEmpty(PathToRepository) && !string.IsNullOrEmpty(PathToUnityYAMLMerge);
-		private void UpdateIsMergetoolAvailable() => IsMergetoolAvailable = !string.IsNullOrEmpty(PathToRepository) && !string.IsNullOrEmpty(PathToUnityYAMLMerge);
+		private void UpdateIsMergetoolAvailable()
+		{
+			if (string.IsNullOrEmpty(PathToRepository))
+			{
+				IsMergetoolAvailable = false;
+				return;
+			}
+			string contentToCheck = "[merge]";
+			string filePath = $"{PathToRepository}\\.git\\config";
+			try
+			{
+				string fileContent = File.ReadAllText(filePath);
+
+				IsMergetoolAvailable = fileContent.Contains(contentToCheck);
+
+			}
+			catch
+			{
+				IsMergetoolAvailable = false;
+			}
+		}
 
 		private void SetupRepository()
 		{
@@ -119,6 +138,7 @@ namespace SimpleUYM.ViewModel
 					// Append the content if not present
 					File.AppendAllText(filePath, contentToAdd);
 					System.Windows.MessageBox.Show("Repository is sucessfully setup", "[SimpleUYM] Setup", MessageBoxButton.OK);
+					IsMergetoolAvailable = true;
 				}
 				else
 				{
