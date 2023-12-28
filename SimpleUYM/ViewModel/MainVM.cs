@@ -52,6 +52,16 @@ namespace SimpleUYM.ViewModel
 				OnPropertyChanged(nameof(IsSetupAvailable));
 			}
 		}
+		private bool _isMergetoolAvailable;
+		public bool IsMergetoolAvailable
+		{
+			get => _isMergetoolAvailable;
+			set
+			{
+				_isMergetoolAvailable = value;
+				OnPropertyChanged(nameof(IsMergetoolAvailable));
+			}
+		}
 
 		private string BatFilePath { get => $"{Environment.CurrentDirectory}\\mergetool.bat"; }
 
@@ -68,9 +78,12 @@ namespace SimpleUYM.ViewModel
 			SetupRepositoryCommand = new RelayCommand(SetupRepository);
 
 			OnRepositoryPathUpdate += UpdateIsSetupAvailable;
+			OnRepositoryPathUpdate += UpdateIsMergetoolAvailable;
 			OnUnityYAMLMergePathUpdate += UpdateIsSetupAvailable;
+			OnUnityYAMLMergePathUpdate += UpdateIsMergetoolAvailable;
 			// Force its update
 			UpdateIsSetupAvailable();
+			UpdateIsMergetoolAvailable();
 		}
 		~MainVM()
 		{
@@ -82,6 +95,7 @@ namespace SimpleUYM.ViewModel
 			}
 		}
 		private void UpdateIsSetupAvailable() => IsSetupAvailable = !string.IsNullOrEmpty(PathToRepository) && !string.IsNullOrEmpty(PathToUnityYAMLMerge);
+		private void UpdateIsMergetoolAvailable() => IsMergetoolAvailable = !string.IsNullOrEmpty(PathToRepository) && !string.IsNullOrEmpty(PathToUnityYAMLMerge);
 
 		private void SetupRepository()
 		{
