@@ -13,6 +13,17 @@ namespace SimpleUYM.ViewModel
 {
 	public class MainVM : ObservableObject
 	{
+		private ColorTheme _colorTheme;
+		public ColorTheme ColorTheme 
+		{
+			get => _colorTheme;
+			set
+			{
+				_colorTheme = value;
+				OnPropertyChanged(nameof(ColorTheme));
+			}
+		}
+
 		// Commands
 		public RelayCommand MergetoolCommand { get; private set; }
 		public RelayCommand ChangeUnityYAMLMergePathCommand { get; private set; }
