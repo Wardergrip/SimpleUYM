@@ -13,7 +13,7 @@
     <TabControl>
 		<TabItem Header="Main">
 			<StackPanel>
-				<Button Content="Mergetool" Command="{Binding MergetoolCommand}"/>
+				<Button Content="Mergetool" Command="{Binding MergetoolCommand}" IsEnabled="{Binding IsMergetoolAvailable}"/>
 			</StackPanel>
 		</TabItem>
 		<TabItem Header="Config">
