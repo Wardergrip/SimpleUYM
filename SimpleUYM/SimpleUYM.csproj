@@ -133,7 +133,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
     <Folder Include="View\" />
   </ItemGroup>
   <ItemGroup>

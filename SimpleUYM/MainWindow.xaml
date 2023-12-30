@@ -31,8 +31,10 @@
 		<TabItem Header="Info">
 			<StackPanel>
 				<TextBlock Text="Version 1.0"/>
-				<TextBlock Text="Github:"/>
-				<TextBlock Text="https://github.com/Wardergrip/SimpleUYM"/>
+				<TextBlock>
+					<TextBlock Text="Github repository: "/>
+					<Hyperlink Command="{Binding OpenGithubReposCommand}">Click here</Hyperlink>
+				</TextBlock>
 			</StackPanel>
 		</TabItem>
 	</TabControl>

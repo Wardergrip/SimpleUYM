@@ -18,6 +18,7 @@ namespace SimpleUYM.ViewModel
 		public RelayCommand ChangeUnityYAMLMergePathCommand { get; private set; }
 		public RelayCommand ChangeGitRepositoryPathCommand { get; private set; }
 		public RelayCommand SetupRepositoryCommand { get; private set; }
+		public RelayCommand OpenGithubReposCommand { get; private set; }
 
 		// Data
 		private string _pathToUnityYAMLMerge;
@@ -66,6 +67,7 @@ namespace SimpleUYM.ViewModel
 			ChangeUnityYAMLMergePathCommand = new RelayCommand(SetPathToUnityYAMLMerge);
 			ChangeGitRepositoryPathCommand = new RelayCommand(SetGitRepositoryPath);
 			SetupRepositoryCommand = new RelayCommand(SetupRepository);
+			OpenGithubReposCommand = new RelayCommand(OpenGithubRepository);
 
 			OnRepositoryPathUpdate += UpdateIsSetupAvailable;
 			OnUnityYAMLMergePathUpdate += UpdateIsSetupAvailable;
@@ -82,6 +84,11 @@ namespace SimpleUYM.ViewModel
 			}
 		}
 		private void UpdateIsSetupAvailable() => IsSetupAvailable = !string.IsNullOrEmpty(PathToRepository) && !string.IsNullOrEmpty(PathToUnityYAMLMerge);
+
+		private void OpenGithubRepository()
+		{
+			Process.Start(new ProcessStartInfo("https://github.com/Wardergrip/SimpleUYM"));
+		}
 
 		private void SetupRepository()
 		{
